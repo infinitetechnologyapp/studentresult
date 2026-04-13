@@ -22,190 +22,250 @@
     }
     @keyframes spin { to { transform:rotate(360deg); } }
 
-    /* ═══════════════════════════════════════════════════
-       REPORT CARD — Full A4 210mm × 297mm
-       Fonts increased for good readability on print
-    ═══════════════════════════════════════════════════ */
+    /* ==========================================================
+       REPORT CARD  210mm x 297mm  |  padding x=16mm  y=16mm
+       - No gaps: justify-content:space-between distributes evenly
+       - Section titles: white bg, BLUE text (no blue bg)
+       - Larger logo, larger school name, bigger fonts throughout
+       - Subjects: nowrap+ellipsis, never breaks to new line
+       - Logo overlaps info box below (laps down)
+       ========================================================== */
     #reportCard {
       background:#fff;
       width:210mm;
-      min-height:290mm;
+      height:297mm;
       margin:0 auto;
-      padding:10mm 12mm;
+      padding:16mm 16mm;
       box-sizing:border-box;
-      box-shadow:0 4px 28px rgba(0,0,0,.12);
+      box-shadow:0 4px 28px rgba(0,0,0,.1);
       font-family:Arial,Helvetica,sans-serif;
-      font-size:8.5pt;
+      font-size:8pt;
       color:#000;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      overflow:hidden;
     }
 
-    /* HEADER */
+    /* ── HEADER ── */
     .rc-header {
       display:flex; align-items:flex-start; gap:10px;
-      border-bottom:2.5px solid #1E40AF; padding-bottom:6px; margin-bottom:5px;
+      border-bottom:2.5px solid #1E40AF;
+      padding-bottom:5px; margin-bottom:0;
+      position:relative;
     }
-    .rc-logo { width:75px; height:75px; object-fit:contain; flex-shrink:0; }
+    /* Logo: large, laps 24px over the info box below */
+    .rc-logo {
+      width:80px; height:80px; object-fit:contain; flex-shrink:0;
+      position:relative; z-index:2;
+      margin-bottom:-24px;
+    }
     .rc-logo-placeholder {
-      width:100px; height:100px; border:2px solid #1E40AF; border-radius:5px;
+      width:80px; height:80px; border:2px solid #1E40AF; border-radius:6px;
       display:flex; align-items:center; justify-content:center;
-      font-size:1.1rem; font-weight:900; color:#1E40AF; flex-shrink:0; background:#fff;
+      font-size:1.6rem; font-weight:900; color:#1E40AF; flex-shrink:0;
+      background:#fff; position:relative; z-index:2;
+      margin-bottom:-24px;
     }
-    .rc-school-info { flex:1; margin-left: 22px; }
+    .rc-school-info { flex:1; padding-left:10px; }
     .rc-school-name {
-      font-size:16pt; font-weight:900; color:#1E40AF;
+      font-size:15pt; font-weight:900; color:#1E40AF;
       letter-spacing:.4px; line-height:1.15; text-transform:uppercase;
     }
-    .rc-school-sub { font-size:7.5pt; color:#000; margin-top:2px; line-height:1.5; }
-
-    /* REPORT TITLE */
-    .rc-report-title {
-      text-align:center; font-size:9.5pt; font-weight:900;
-      text-transform:uppercase; letter-spacing:.8px;
-      border:1.5px solid #1E40AF; padding:3px 8px;
-      margin:4px 0; color:#1E40AF; background:#fff;
+    .rc-school-sub {
+      font-size:8.5pt; font-weight:700; color:#000; margin-top:3px; line-height:1.55;
     }
 
-    /* SESSION / TERM LINE */
+    /* ── REPORT TITLE: white bg, blue text, blue border ── */
+    .rc-report-title {
+      text-align:center; font-size:9pt; font-weight:900;
+      text-transform:uppercase; letter-spacing:.8px;
+      border:2px solid #1E40AF;
+      padding:3px 8px; margin:4px 0 3px;
+      color:#1E40AF;
+      background:#fff;   /* WHITE background */
+    }
+
+    /* ── SESSION/TERM ── */
     .rc-session-line {
       display:flex; justify-content:space-between;
-      font-size:8.5pt; font-weight:800; margin-bottom:4px;
+      font-size:8pt; font-weight:800; margin-bottom:3px;
     }
 
-    /* STUDENT INFO — 3 columns */
+    /* ── STUDENT INFO — 3 cols, no logo gap (logo floats above via z-index) ── */
     .rc-info-box {
       border:1.5px solid #1E40AF; border-radius:3px;
-      padding:4px 8px; margin-bottom:4px;
+      padding:5px 10px;           /* uniform padding — no extra left gap */
+      margin-bottom:0;
       display:grid; grid-template-columns:1fr 1fr 1fr;
-      gap:3px 14px; font-size:8pt; background:#fff;
+      gap:4px 14px; font-size:9pt; background:#fff;
+      position:relative; z-index:1;
     }
     .rc-info-row { display:flex; gap:5px; align-items:baseline; }
-    .rc-info-label { font-weight:800; white-space:nowrap; color:#1E40AF; font-size:7.5pt; }
+    .rc-info-label { font-weight:900; white-space:nowrap; color:#1E40AF; font-size:8pt; }
     .rc-info-value {
-      border-bottom:1px solid #94a3b8; flex:1;
-      font-weight:700; padding-bottom:1px; min-width:40px;
+      border-bottom:1.5px solid #94a3b8; flex:1;
+      font-weight:800; padding-bottom:1px; min-width:30px;
+      font-size:9pt;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    /* Name row: larger and bolder for maximum visibility */
+    .rc-info-full .rc-info-value {
+      font-size:10pt; font-weight:900; color:#000;
     }
     .rc-info-full { grid-column:1/-1; }
 
-    /* SECTION TITLES */
+    /* ── SECTION TITLE: white bg, BLUE text ── */
     .rc-section-title {
-      font-size:8pt; font-weight:900; text-transform:uppercase;
-      border:1.5px solid #1E40AF; color:#1E40AF; background:#fff;
-      padding:2px 7px; margin:4px 0 0; letter-spacing:.4px;
+      font-size:7.5pt; font-weight:900; text-transform:uppercase;
+      border:1.5px solid #1E40AF;
+      color:#1E40AF;
+      background:#fff;   /* WHITE background, blue text */
+      padding:2px 6px; margin:0; letter-spacing:.4px;
     }
 
-    /* SCORE TABLE */
-    .rc-table { width:100%; border-collapse:collapse; font-size:8pt; margin-bottom:2px; }
+    /* ── ACADEMIC GRID 70 / 30 ── */
+    .rc-academic-grid {
+      display:grid;
+      grid-template-columns:70% 30%;
+      gap:3px;
+    }
+
+    /* ── SCORE TABLE ── */
+    .rc-table { width:100%; border-collapse:collapse; font-size:7.5pt; }
     .rc-table th {
-      background:#1E40AF; color:#fff; font-weight:800;
+      /* WHITE bg, BLUE text — no blue background */
+      background:#fff; color:#1E40AF; font-weight:900;
       text-align:center; padding:3px 2px;
-      border:1px solid #1e3a8a; font-size:7.5pt;
+      border:1.5px solid #1E40AF; font-size:7pt; line-height:1.3;
     }
-    .rc-table th.subj-col { text-align:left; width:36%; }
+    .rc-table th.subj-col { text-align:left; width:38%; }
     .rc-table td {
-      border:1px solid #94a3b8; padding:2px 3px;
-      text-align:center; font-size:8pt; background:#fff;
+      border:1px solid #cbd5e1; padding:2px 3px;
+      text-align:center; font-size:7.5pt; background:#fff; line-height:1.3;
     }
-    .rc-table td.subj-name { text-align:left; font-weight:700; padding-left:4px; }
+    .rc-table td.subj-name {
+      text-align:left; font-weight:700; padding-left:4px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width:0;
+    }
     .rc-table .grade-cell { font-weight:900; color:#1E40AF; }
 
-    /* AFFECTIVE & PSYCHOMOTOR TRAITS */
-    .rc-trait-table { width:100%; border-collapse:collapse; font-size:7.5pt; }
+    /* ── TRAIT SECTION TITLES: white bg, blue text ── */
+    .rc-trait-section-title {
+      font-size:6.5pt; font-weight:900; text-transform:uppercase;
+      border:1.5px solid #1E40AF;
+      color:#1E40AF;
+      background:#fff;   /* WHITE background */
+      padding:2px 4px; letter-spacing:.2px;
+    }
+
+    /* ── TRAIT TABLES: white bg, blue text headers ── */
+    .rc-trait-table { width:100%; border-collapse:collapse; font-size:6.5pt; }
     .rc-trait-table th {
-      background:#1E40AF; color:#fff; padding:2px 3px;
-      border:1px solid #1e3a8a; font-size:7pt; text-align:center;
+      background:#fff; color:#1E40AF; font-weight:900;
+      padding:2px 2px;
+      border:1.5px solid #1E40AF; font-size:6.5pt; text-align:center; line-height:1.3;
     }
-    .rc-trait-table th.trait-label { text-align:left; }
+    .rc-trait-table th.trait-label { text-align:left; width:60%; }
     .rc-trait-table td {
-      border:1px solid #94a3b8; padding:2px 3px;
-      text-align:center; font-size:7.5pt; background:#fff;
+      border:1px solid #cbd5e1; padding:2px 2px;
+      text-align:center; font-size:6.5pt; background:#fff; line-height:1.3;
     }
-    .rc-trait-table td.trait-name { text-align:left; font-weight:700; }
+    .rc-trait-table td.trait-name {
+      text-align:left; font-weight:700;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:0;
+    }
     .tick-cell { font-weight:900; color:#1E40AF; font-size:9pt; }
 
-    /* SUMMARY */
+    /* ── SUMMARY ── */
     .rc-summary {
       border:1.5px solid #1E40AF; border-radius:3px;
-      padding:4px 8px; margin-bottom:4px;
+      padding:4px 8px; margin:0;
       display:grid; grid-template-columns:1fr 1fr;
-      gap:3px 14px; font-size:8pt; background:#fff;
+      gap:3px 12px; font-size:8pt; background:#fff;
     }
-    .rc-sum-row { display:flex; gap:5px; align-items:baseline; }
+    .rc-sum-row { display:flex; gap:4px; align-items:baseline; }
     .rc-sum-label { font-weight:800; white-space:nowrap; color:#1E40AF; font-size:7.5pt; }
-    .rc-sum-value {
-      border-bottom:1px solid #94a3b8; flex:1;
-      font-weight:700; padding-bottom:1px;
-    }
+    .rc-sum-value { border-bottom:1px solid #94a3b8; flex:1; font-weight:700; padding-bottom:1px; }
 
-    /* REMARKS */
-    .rc-remarks-row { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:4px; }
-    .rc-remark-box { border:1.5px solid #1E40AF; border-radius:3px; padding:4px 8px; background:#fff; }
+    /* ── REMARKS ── */
+    .rc-remarks-row {
+      display:grid; grid-template-columns:1fr 1fr; gap:5px; margin:0;
+    }
+    .rc-remark-box {
+      border:1.5px solid #1E40AF; border-radius:3px; padding:4px 6px; background:#fff;
+    }
     .rc-remark-title {
-      font-size:7.5pt; font-weight:900; text-transform:uppercase;
+      font-size:7pt; font-weight:900; text-transform:uppercase;
       color:#1E40AF; margin-bottom:3px;
       border-bottom:1px solid #1E40AF; padding-bottom:2px;
     }
     .rc-remark-text {
-      font-size:8pt; min-height:22px;
+      font-size:7.5pt; min-height:18px;
       border-bottom:1px solid #94a3b8;
-      margin-bottom:6px; padding-bottom:1px; line-height:1.4;
+      margin-bottom:4px; padding-bottom:1px; line-height:1.4;
     }
-    .rc-sig-line {
-      display:flex; gap:6px; align-items:flex-end;
-      font-size:7.5pt; font-weight:700; color:#000;
-    }
-    .rc-sig-underline { flex:1; border-bottom:1px solid #000; margin-bottom:0; }
+    .rc-sig-line { display:flex; gap:4px; align-items:flex-end; font-size:7pt; font-weight:700; color:#000; }
+    .rc-sig-underline { flex:1; border-bottom:1px solid #000; }
 
-    /* GRADING KEY + STAMP */
-    .rc-bottom-row { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:4px; }
-    .rc-grading-box { border:1.5px solid #1E40AF; border-radius:3px; padding:4px 8px; background:#fff; }
+    /* ── GRADING + STAMP ── */
+    .rc-bottom-row {
+      display:grid; grid-template-columns:1fr 1fr; gap:5px; margin:0;
+    }
+    .rc-grading-box { border:1.5px solid #1E40AF; border-radius:3px; padding:4px 6px; background:#fff; }
     .rc-grading-title {
-      font-size:7.5pt; font-weight:900; text-transform:uppercase;
+      font-size:7pt; font-weight:900; text-transform:uppercase;
       color:#1E40AF; margin-bottom:3px;
       border-bottom:1px solid #1E40AF; padding-bottom:2px; text-align:center;
     }
-    .rc-grade-row { display:flex; gap:5px; font-size:7.5pt; align-items:baseline; margin-bottom:2px; }
+    .rc-grade-row { display:flex; gap:20px; font-size:7.5pt; align-items:baseline; margin-bottom:2px; }
     .rc-grade-letter { font-weight:900; color:#1E40AF; width:14px; }
-    .rc-grade-label  { font-weight:700; width:58px; }
+    .rc-grade-label  { font-weight:700; width:80px; }
     .rc-grade-range  { color:#000; }
     .rc-stamp-box {
       border:1.5px dashed #94a3b8; border-radius:3px;
       display:flex; align-items:center; justify-content:center;
-      min-height:72px; color:#94a3b8; font-size:8pt; font-weight:700; text-align:center;
-      background:#fff;
+      min-height:55px; color:#94a3b8; font-size:7.5pt; font-weight:700;
+      text-align:center; background:#fff;
     }
 
-    /* NOTE + FOOTER */
+    /* ── NOTE + FOOTER ── */
     .rc-note {
-      font-size:7pt; text-align:center; color:#000;
-      font-style:italic; border-top:1px solid #e2e8f0;
-      padding-top:3px; margin-bottom:3px;
+      font-size:6.5pt; text-align:center; color:#000;
+      font-style:italic; border-top:1px solid #e2e8f0; padding-top:2px;
     }
     .rc-footer {
       display:flex; justify-content:space-between; align-items:center;
-      font-size:7pt; color:#555;
+      font-size:6.5pt; color:#555;
       border-top:1px solid #e2e8f0; padding-top:2px;
     }
 
-    /* ═══════════════════════════════════════════════════
-       PRINT — exact A4 210×297mm, zero page margins
-       All margins handled by the card's own padding
-    ═══════════════════════════════════════════════════ */
+    /* ==========================================================
+       PRINT  — card IS the page. Exact 210x297. Zero margins.
+       ========================================================== */
     @media print {
-      body { background:#fff !important; padding:0; margin:0; }
+      * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+      html, body { margin:0 !important; padding:0 !important; background:#fff !important; }
       .screen-bar { display:none !important; }
-      #app { padding:0; max-width:none; }
+      #app { padding:0 !important; margin:0 !important; max-width:none !important; }
       #loadingState, #notApprovedState, #errorState { display:none !important; }
+      #resultContent { display:block !important; }
       #reportCard {
         box-shadow:none !important;
-        margin:0;
-        padding:10mm 12mm;
-        width:210mm;
-        min-height:290mm;
+        margin:0 !important;
+        padding:16mm 16mm !important;
+        width:210mm !important;
+        height:297mm !important;
+        overflow:hidden !important;
+        page-break-after:always;
+        page-break-inside:avoid;
+        display:flex !important;
+        flex-direction:column !important;
+        justify-content:space-between !important;
       }
-      @page {
-        size:210mm 290mm;
-        margin:0;
-      }
+      @page { size:210mm 297mm; margin:0; }
     }
   </style>
 </head>
@@ -258,7 +318,7 @@
     </div>
 
     <div class="rc-report-title" id="rcReportTitle">PROGRESS REPORT</div>
-    <div style="display:flex;justify-content:space-between;font-size:7.5pt;font-weight:800;margin-bottom:2px">
+    <div class="rc-session-line">
       <span>SESSION: <span id="rcSession" style="color:#1E40AF">—</span></span>
       <span>TERM: <span id="rcTerm" style="color:#1E40AF">—</span></span>
     </div>
@@ -274,10 +334,6 @@
         <span class="rc-info-value" id="rcReg">—</span>
       </div>
       <div class="rc-info-row">
-        <span class="rc-info-label">Sex:</span>
-        <span class="rc-info-value" id="rcGender">—</span>
-      </div>
-      <div class="rc-info-row">
         <span class="rc-info-label">Class:</span>
         <span class="rc-info-value" id="rcClass">—</span>
       </div>
@@ -286,47 +342,53 @@
         <span class="rc-info-value" id="rcStream">—</span>
       </div>
       <div class="rc-info-row">
-        <span class="rc-info-label">Class Population:</span>
-        <span class="rc-info-value" id="rcPopulation">—</span>
+        <span class="rc-info-label">Sex:</span>
+        <span class="rc-info-value" id="rcGender">—</span>
       </div>
       <div class="rc-info-row">
         <span class="rc-info-label">Position:</span>
         <span class="rc-info-value" id="rcInfoPosition" style="font-weight:900;color:#1E40AF">—</span>
       </div>
+      <div class="rc-info-row">
+        <span class="rc-info-label">Class Population:</span>
+        <span class="rc-info-value" id="rcPopulation">—</span>
+      </div>
     </div>
 
-    <!-- SCORE TABLE + TRAITS SIDE BY SIDE -->
+    <!-- SCORE TABLE + TRAITS SIDE BY SIDE — 70% / 30% fills remaining height -->
     <div class="rc-section-title">Academic Performance &amp; Traits</div>
-    <div style="display:grid;grid-template-columns:58% 42%;gap:4px;margin-bottom:3px">
+    <div class="rc-academic-grid">
 
-      <!-- LEFT: SCORE TABLE -->
+      <!-- LEFT 70%: SCORE TABLE -->
       <div>
-        <table class="rc-table" style="margin-bottom:0">
-          <thead>
-            <tr>
-              <th class="subj-col">SUBJECT</th>
-              <th>CA1<br/><span style="font-weight:400;font-size:6pt">/20</span></th>
-              <th>CA2<br/><span style="font-weight:400;font-size:6pt">/20</span></th>
-              <th>EXM<br/><span style="font-weight:400;font-size:6pt">/60</span></th>
-              <th>TOT<br/><span style="font-weight:400;font-size:6pt">/100</span></th>
-              <th>POS</th>
-              <th>GRD</th>
-            </tr>
-          </thead>
-          <tbody id="resultTbody">
-            <tr><td colspan="7" style="text-align:center;padding:8px;color:#94a3b8">Loading…</td></tr>
-          </tbody>
-        </table>
+        <div class="rc-table-wrap">
+          <table class="rc-table">
+            <thead>
+              <tr>
+                <th class="subj-col">SUBJECT</th>
+                <th>CA1<br/><span style="font-weight:400;font-size:5.5pt">/20</span></th>
+                <th>CA2<br/><span style="font-weight:400;font-size:5.5pt">/20</span></th>
+                <th>EXM<br/><span style="font-weight:400;font-size:5.5pt">/60</span></th>
+                <th>TOT<br/><span style="font-weight:400;font-size:5.5pt">/100</span></th>
+                <th>POS</th>
+                <th>GRD</th>
+              </tr>
+            </thead>
+            <tbody id="resultTbody">
+              <tr><td colspan="7" style="text-align:center;padding:8px;color:#94a3b8">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <!-- RIGHT: AFFECTIVE TRAITS + PSYCHOMOTOR STACKED -->
+      <!-- RIGHT 30%: AFFECTIVE TRAITS + PSYCHOMOTOR STACKED -->
       <div>
-        <div style="font-size:6.5pt;font-weight:900;text-transform:uppercase;border:1.5px solid #1E40AF;color:#1E40AF;background:#fff;padding:1px 5px;letter-spacing:.3px;margin-bottom:0">PART C — AFFECTIVE TRAITS</div>
+        <div class="rc-trait-section-title">PART C — AFFECTIVE TRAITS</div>
         <table class="rc-trait-table" style="margin-bottom:3px">
           <thead><tr><th class="trait-label">DESCRIPTION</th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
           <tbody id="affectiveTbody"></tbody>
         </table>
-        <div style="font-size:6.5pt;font-weight:900;text-transform:uppercase;border:1.5px solid #1E40AF;color:#1E40AF;background:#fff;padding:1px 5px;letter-spacing:.3px;margin-bottom:0">PART D — PSYCHOMOTOR SKILLS</div>
+        <div class="rc-trait-section-title">PART D — PSYCHOMOTOR SKILLS</div>
         <table class="rc-trait-table">
           <thead><tr><th class="trait-label">DESCRIPTION</th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
           <tbody id="psychomotorTbody"></tbody>
@@ -350,12 +412,12 @@
         <span class="rc-sum-value" id="rcTotal">—</span>
       </div>
       <div class="rc-sum-row">
-        <span class="rc-sum-label">Average Scored:</span>
-        <span class="rc-sum-value" id="rcAverage">—</span>
-      </div>
-      <div class="rc-sum-row">
         <span class="rc-sum-label">Overall Position:</span>
         <span class="rc-sum-value" id="rcPosition">—</span>
+      </div>
+      <div class="rc-sum-row">
+        <span class="rc-sum-label">Average Scored:</span>
+        <span class="rc-sum-value" id="rcAverage">—</span>
       </div>
       <div class="rc-sum-row">
         <span class="rc-sum-label">Out of:</span>
@@ -377,7 +439,7 @@
         <div class="rc-remark-title">Class Teacher's Remarks</div>
         <div class="rc-remark-text" id="rcRemark">—</div>
         <div class="rc-sig-line"><span>Signature:</span><span class="rc-sig-underline"></span></div>
-        <div class="rc-sig-line" style="margin-top:5px">
+        <div class="rc-sig-line" style="margin-top:4px">
           <span>Date:</span><span class="rc-sig-underline" id="rcClosingDate"></span>
         </div>
       </div>
@@ -385,7 +447,7 @@
         <div class="rc-remark-title" id="rcHodTitle">Principal's Remarks</div>
         <div class="rc-remark-text" id="rcHodRemark">—</div>
         <div class="rc-sig-line"><span>Signature:</span><span class="rc-sig-underline"></span></div>
-        <div class="rc-sig-line" style="margin-top:5px">
+        <div class="rc-sig-line" style="margin-top:4px">
           <span>Date:</span><span class="rc-sig-underline" id="rcHodDate"></span>
         </div>
       </div>
